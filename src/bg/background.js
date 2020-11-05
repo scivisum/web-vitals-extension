@@ -279,6 +279,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       const key = hashCode(sender.tab.url);
       chrome.storage.local.set({[key]: request.metrics});
     }
+    chrome.tabs.executeScript({
+      code: `localStorage.setItem('webVitalMetrics', '${JSON.stringify(request.metrics)}');`
+    });
     // send TabId to content script
     sendResponse({tabId: sender.tab.id});
   }
